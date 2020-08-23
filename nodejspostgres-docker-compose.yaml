@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+
+  noderestapi:
+    build: .
+    command: node postgresindex.js
+    container_name: node_rest_api
+    ports:
+      - "40196:3000"
+    depends_on:
+      - db
+  
+volumes:
+  pgdata2:
+    driver: local
